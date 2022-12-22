@@ -22,7 +22,7 @@ export default {
   ],
   openGraph: {
     site_name: "sic.",
-    url: "https://sic-mu.vercel.app/",
+    url: "https://sic-iota.vercel.app/",
     type: "website",
     locale: "en_IE",
     images: [],
