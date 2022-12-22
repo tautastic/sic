@@ -1,10 +1,10 @@
 "use client";
 
-import type { Item } from "@/lib/grades";
+import { GlobalNavItem } from "@/lib/types.nav";
 import { grades } from "@/lib/grades";
 import { NextLogo } from "@/ui/NextLogo";
 import Link from "next/link";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { HiBars3BottomLeft, HiXMark } from "react-icons/hi2";
 import clsx from "clsx";
 import { useState } from "react";
@@ -59,7 +59,7 @@ export function GlobalNav() {
                 <div className="space-y-1">
                   {grade.items.map((item) => (
                     <GlobalNavItem
-                      key={item.path}
+                      key={item.path + item.slug}
                       item={item}
                       close={close}
                     />
@@ -78,21 +78,22 @@ function GlobalNavItem({
   item,
   close,
 }: {
-  item: Item;
+  item: GlobalNavItem;
   close: () => false | void;
 }) {
-  const segment = useSelectedLayoutSegment();
-  const isActive = item.path === segment;
+  const isActive =
+    item.slug === usePathname()?.split("/").at(-1)?.replace(/\D/g, "");
+  const href = item.slug ? item.path + "/" + item.slug : item.path;
 
   return (
     <Link
       onClick={close}
-      href={item.path}
+      href={href}
       className={clsx(
         "block rounded-md px-3 py-2 text-sm font-medium hover:text-gray-300",
         {
           "text-gray-400 hover:bg-gray-800": !isActive,
-          "text-white": isActive,
+          "font-bold text-white": isActive,
         }
       )}>
       {item.name}

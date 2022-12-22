@@ -1,24 +1,14 @@
 "use client";
 
-import type { Item } from "@/ui/TabGroup";
+import type { TabItem } from "@/lib/types.nav";
 import clsx from "clsx";
 import Link from "next/link";
-import { useSelectedLayoutSegment } from "next/navigation";
+import { usePathname } from "next/navigation";
 
-export const Tab = ({
-  path,
-  item: { slug, text },
-}: {
-  path: string;
-  item: Item;
-}) => {
-  const segment = useSelectedLayoutSegment();
-  const href = slug ? path + "/" + slug : path;
-  const isActive =
-    // Example home pages e.g. `/layouts`
-    (!slug && segment === null) ||
-    // Nested pages e.g. `/layouts/electronics`
-    segment === slug;
+export const Tab = (item: TabItem) => {
+  const pathname = usePathname();
+  const isActive = item.slug === pathname?.split("/").at(-1);
+  const href = item.slug ? item.path + "/" + item.slug : item.path;
 
   return (
     <Link
@@ -28,7 +18,7 @@ export const Tab = ({
           !isActive,
         "bg-vercel-blue text-white": isActive,
       })}>
-      {text}
+      {item.text}
     </Link>
   );
 };

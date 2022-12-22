@@ -1,8 +1,23 @@
 import { Boundary } from "@/ui/Boundary";
+import { TabGroup } from "@/ui/TabGroup";
 
 const Loading = () => {
   return (
     <div className="space-y-4">
+      <div className="flex justify-between">
+        <TabGroup
+          items={[
+            { path: "", slug: "", text: "" },
+            { path: "", slug: "", text: "" },
+            { path: "", slug: "", text: "" },
+            { path: "", slug: "", text: "" },
+            { path: "", slug: "", text: "" },
+            { path: "", slug: "", text: "" },
+            { path: "", slug: "", text: "" },
+            { path: "", slug: "", text: "" },
+          ]}
+        />
+      </div>
       <Boundary labels={["Lade...", "Stand: Lade..."]}>
         <div className="overflow-y-hidden overflow-x-scroll">
           <table className="w-full pl-4 text-sm text-gray-300">

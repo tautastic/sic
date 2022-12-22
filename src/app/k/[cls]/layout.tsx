@@ -20,30 +20,23 @@ const Layout = ({
     { id: `${grade}g` },
   ];
 
-  if (grade === "" || grade === undefined) {
-    return (
-      <div className="my-3">
-        <div>{children}</div>
+  return (
+    <div className="space-y-9">
+      <div className="flex justify-between">
+        <TabGroup
+          items={[
+            ...classes.map((x) => ({
+              path: "/k",
+              slug: `${x.id}`,
+              text: `${x.id}`,
+            })),
+          ]}
+        />
       </div>
-    );
-  } else {
-    return (
-      <div className="space-y-9">
-        <div className="flex justify-between">
-          <TabGroup
-            items={[
-              ...classes.map((x) => ({
-                text: `${x.id}`,
-                slug: x.id,
-              })),
-            ]}
-          />
-        </div>
 
-        <div>{children}</div>
-      </div>
-    );
-  }
+      <div>{children}</div>
+    </div>
+  );
 };
 
 export default Layout;
