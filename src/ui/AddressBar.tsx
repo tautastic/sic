@@ -24,7 +24,7 @@ export function AddressBar() {
       <div className="flex space-x-1 text-sm font-medium">
         <div>
           <Link href={"/"}>
-            <span className="px-2 text-gray-400">sic.vercel.app</span>
+            <span className="px-2 text-gray-400">sic-iota.vercel.app</span>
           </Link>
         </div>
         {pathname ? (

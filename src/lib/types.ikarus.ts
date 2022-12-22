@@ -15,6 +15,7 @@ export interface IkarusResponse {
   lastUpdate: string;
   messageData: { messages: [] };
   nextDate: string;
+  requestTime: number;
   rows: IkarusRow[];
   weekDay: string;
 }
@@ -24,6 +25,7 @@ export const DefaultIkarusResponse: IkarusResponse = {
   lastUpdate: "",
   messageData: { messages: [] },
   nextDate: "",
+  requestTime: 0,
   rows: [],
   weekDay: "",
 };

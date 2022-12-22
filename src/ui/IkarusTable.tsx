@@ -26,7 +26,15 @@ const IkarusTable = ({ variant }: IkarusTableProps) => {
         setIkarusState(data);
       } else {
         // Cache is not empty so we can use the cached data
-        setIkarusState(cachedData);
+        if (cachedData.requestTime + 60 * 5000 < Date.now()) {
+          // Cache is older than 5 minutes so we need to fetch the data
+          const fetchedData = await fetch(`/api/IkarusFetch/${variant}`);
+          const data: IkarusResponse = await fetchedData.json();
+          setCachedIkarusData({ variant, data });
+          setIkarusState(data);
+        } else {
+          setIkarusState(cachedData);
+        }
       }
     };
     getData();

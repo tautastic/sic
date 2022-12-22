@@ -13,7 +13,7 @@ export const TabGroup = () => {
       {items?.map((item) => {
         return (
           <Tab
-            key={item.name}
+            key={item.name + item.slug}
             name={item.name}
             path={item.path}
             slug={item.slug}

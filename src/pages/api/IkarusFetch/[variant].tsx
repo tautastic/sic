@@ -2,26 +2,32 @@ import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dateToday = () => {
   const date = new Date();
-  // TODO: Fix this
-  //  For testing purposes this currently returns yesterday
-  date.setDate(date.getDate() - 1);
   return date.toISOString().split("T")[0]?.replace(/-/g, "");
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dateTomorrow = () => {
   const date = new Date();
-  // TODO: Fix this
-  //  For testing purposes this currently returns the day before yesterday
-  date.setDate(date.getDate() - 2);
+  date.setDate(date.getDate() + 1);
   return date.toISOString().split("T")[0]?.replace(/-/g, "");
+};
+
+const testingDateHeute = () => {
+  return "20221221";
+};
+
+const testingDateMorgen = () => {
+  return "20221222";
 };
 
 const makeReqBody = (variant: "Heute" | "Morgen") => {
   return {
     activityTypeIds: [3],
-    date: variant === "Heute" ? dateToday() : dateTomorrow(),
+    // TODO: Change to dateToday() and dateTomorrow() after testing
+    date: variant === "Heute" ? testingDateHeute() : testingDateMorgen(),
     dateOffset: 0,
     departmentElementType: -1,
     departmentIds: [],
@@ -72,6 +78,7 @@ const parseIkarusRes: (res: Response) => Promise<IkarusResponse> = async (
   return {
     date: payloadData.date.toString(),
     nextDate: payloadData.nextDate.toString(),
+    requestTime: Date.now(),
     rows: [
       ...dataRows.map((row: { data: string[] }) => ({
         period: row.data[0],
@@ -113,6 +120,7 @@ const ikarusFetch = async (
         keepalive: true,
         body: JSON.stringify(reqBody),
         method: "POST",
+        next: { revalidate: 180000 },
       }
     );
     if (res.ok) {
