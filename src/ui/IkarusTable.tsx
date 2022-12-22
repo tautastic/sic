@@ -33,6 +33,7 @@ const IkarusTable = ({ variant }: IkarusTableProps) => {
           setCachedIkarusData({ variant, data });
           setIkarusState(data);
         } else {
+          // Cache is not older than 5 minutes so we can use the cached data
           setIkarusState(cachedData);
         }
       }

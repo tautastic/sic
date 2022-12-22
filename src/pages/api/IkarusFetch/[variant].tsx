@@ -120,7 +120,8 @@ const ikarusFetch = async (
         keepalive: true,
         body: JSON.stringify(reqBody),
         method: "POST",
-        next: { revalidate: 180000 },
+        // revalidate every 5 minutes
+        next: { revalidate: 300 },
       }
     );
     if (res.ok) {
@@ -140,7 +141,7 @@ const IkarusFetchHandler = async (
     try {
       const response = await ikarusFetch(req.query.variant);
       res.setHeader("Content-Type", "application/json");
-      res.setHeader("Cache-Control", "max-age=180000");
+      res.setHeader("Cache-Control", "max-age=60");
       if (response.date !== "") {
         res.status(200).end(JSON.stringify(response));
       } else {
