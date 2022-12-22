@@ -1,6 +1,6 @@
 import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
-import "server-only";
+import type { NextApiRequest, NextApiResponse } from "next";
 
 const dateToday = () => {
   const date = new Date();
@@ -124,10 +124,28 @@ const ikarusFetch = async (
   return DefaultIkarusResponse;
 };
 
-export const IkarusFetchToday = async (): Promise<IkarusResponse> => {
-  return await ikarusFetch("Heute");
+const IkarusFetchHandler = async (
+  req: NextApiRequest,
+  res: NextApiResponse<IkarusResponse | unknown>
+) => {
+  if (req.query.variant === "Heute" || req.query.variant === "Morgen") {
+    try {
+      const response = await ikarusFetch(req.query.variant);
+      res.setHeader("Content-Type", "application/json");
+      res.setHeader("Cache-Control", "max-age=180000");
+      if (response.date !== "") {
+        res.status(200).end(JSON.stringify(response));
+      } else {
+        res.redirect(302, `/api/IkarusFetch/${req.query.variant}`);
+      }
+    } catch (error) {
+      res.json(error);
+      res.status(500).end();
+    }
+  } else {
+    res.json({ message: "Invalid variant" });
+    res.status(400).end();
+  }
 };
 
-export const IkarusFetchTomorrow = async (): Promise<IkarusResponse> => {
-  return await ikarusFetch("Morgen");
-};
+export default IkarusFetchHandler;

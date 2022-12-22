@@ -2,17 +2,13 @@
 
 import clsx from "clsx";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import type { GlobalNavChild } from "@/lib/types.nav";
 
 export const Tab = (item: GlobalNavChild) => {
   const pathname = usePathname();
   const isActive = item.slug === pathname?.split("/").at(-1);
   const href = item.slug ? item.path + "/" + item.slug : item.path;
-
-  const router = useRouter();
-
-  router.prefetch(href);
   return (
     <Link
       href={href}

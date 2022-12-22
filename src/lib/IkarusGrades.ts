@@ -61,6 +61,16 @@ export const IkarusGrades: GlobalNavParent[] = [
         slug: "5",
       },
       {
+        name: "5",
+        path: "/k",
+        slug: "5iva",
+      },
+      {
+        name: "5",
+        path: "/k",
+        slug: "5ivb",
+      },
+      {
         name: "Klasse 5a",
         path: "/k",
         slug: "5a",

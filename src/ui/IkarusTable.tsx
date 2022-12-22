@@ -6,35 +6,31 @@ import { useEffect, useState } from "react";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import { getCachedIkarusData, setCachedIkarusData } from "@/lib/IkarusCache";
 import { Boundary } from "@/ui/Boundary";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 
 interface IkarusTableProps {
   variant: "Heute" | "Morgen";
-  fetchedData: IkarusResponse;
 }
-const IkarusTable = ({ variant, fetchedData }: IkarusTableProps) => {
+const IkarusTable = ({ variant }: IkarusTableProps) => {
   const [ikarusState, setIkarusState] = useState(DefaultIkarusResponse);
-  const router = useRouter();
   const slug = usePathname()?.split("/").at(-1);
 
   useEffect(() => {
-    const cachedData = getCachedIkarusData(variant);
-    if (fetchedData.date === "" && cachedData.date === "") {
-      // If both data and cachedData are empty, we need to fetch the data again
-      router.refresh();
-    } else if (fetchedData.date === "") {
-      // If data is empty, but cachedData is not, we use the cachedData
-      setIkarusState(cachedData);
-    } else {
-      // If data is not empty, we use the data
-      setIkarusState(fetchedData);
-      if (fetchedData.lastUpdate !== cachedData.lastUpdate) {
-        // If the data is not the same as the cachedData, we cache the data
-        setCachedIkarusData({ variant, data: fetchedData });
+    const getData = async () => {
+      const cachedData: IkarusResponse = getCachedIkarusData(variant);
+      if (cachedData.date === "") {
+        // Cache is empty so we need to fetch the data
+        const fetchedData = await fetch(`/api/IkarusFetch/${variant}`);
+        const data: IkarusResponse = await fetchedData.json();
+        setCachedIkarusData({ variant, data });
+        setIkarusState(data);
+      } else {
+        // Cache is not empty so we can use the cached data
+        setIkarusState(cachedData);
       }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [fetchedData]);
+    };
+    getData();
+  }, [variant]);
 
   return (
     <Boundary labels={[`${variant}`, `Stand: ${ikarusState.lastUpdate}`]}>

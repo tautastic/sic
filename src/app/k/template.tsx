@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { TabGroup } from "@/ui/TabGroup";
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Template = ({ children }: { children: ReactNode }) => {
   return (
     <div className="space-y-9">
       <div className="flex justify-between">
@@ -13,4 +13,4 @@ const Layout = ({ children }: { children: ReactNode }) => {
   );
 };
 
-export default Layout;
+export default Template;
