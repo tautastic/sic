@@ -1,5 +1,5 @@
-import { grades } from "@/lib/grades";
 import Link from "next/link";
+import { GlobalNavSections } from "@/lib/GlobalNavSections";
 
 const Page = () => {
   return (
@@ -7,7 +7,7 @@ const Page = () => {
       <h1 className="text-xl font-medium text-gray-300">Index</h1>
 
       <div className="space-y-10 text-white">
-        {grades.map((section) => {
+        {GlobalNavSections.map((section) => {
           return (
             <div
               key={section.name}

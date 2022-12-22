@@ -113,7 +113,6 @@ const ikarusFetch = async (
         keepalive: true,
         body: JSON.stringify(reqBody),
         method: "POST",
-        cache: "no-cache",
       }
     );
     if (res.ok) {

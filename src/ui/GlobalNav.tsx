@@ -1,13 +1,13 @@
 "use client";
 
-import { GlobalNavItem } from "@/lib/types.nav";
-import { grades } from "@/lib/grades";
+import type { GlobalNavParent } from "@/lib/types.nav";
 import { NextLogo } from "@/ui/NextLogo";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HiBars3BottomLeft, HiXMark } from "react-icons/hi2";
 import clsx from "clsx";
 import { useState } from "react";
+import { GlobalNavSections } from "@/lib/GlobalNavSections";
 
 export function GlobalNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -49,15 +49,15 @@ export function GlobalNav() {
           "hidden": !isOpen,
         })}>
         <nav className="space-y-6 px-2 py-5">
-          {grades.map((grade) => {
+          {GlobalNavSections.map((section) => {
             return (
-              <div key={grade.name}>
+              <div key={section.name}>
                 <div className="mb-2 px-3 text-xs font-semibold uppercase tracking-wider text-gray-400/80">
-                  <div>{grade.name}</div>
+                  <div>{section.name}</div>
                 </div>
 
                 <div className="space-y-1">
-                  {grade.items.map((item) => (
+                  {section.items.map((item) => (
                     <GlobalNavItem
                       key={item.path + item.slug}
                       item={item}
@@ -78,7 +78,7 @@ function GlobalNavItem({
   item,
   close,
 }: {
-  item: GlobalNavItem;
+  item: GlobalNavParent;
   close: () => false | void;
 }) {
   const isActive =

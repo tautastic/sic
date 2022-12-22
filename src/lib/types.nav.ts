@@ -1,12 +1,14 @@
-export type GlobalNavItem = {
+export type GlobalNavChild = {
   name: string;
   path: string;
   slug: string;
   text?: string;
 };
 
-export type TabItem = {
+export type GlobalNavParent = {
+  name: string;
   path: string;
   slug: string;
-  text: string;
+  text?: string;
+  children?: GlobalNavChild[];
 };

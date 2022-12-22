@@ -1,4 +1,4 @@
-import IkarusTable from "@/components/IkarusTable";
+import IkarusTable from "@/ui/IkarusTable";
 import { IkarusFetchToday, IkarusFetchTomorrow } from "@/lib/IkarusFetch";
 
 const Page = async () => {
