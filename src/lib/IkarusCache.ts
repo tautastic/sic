@@ -10,7 +10,7 @@ interface setCachedIkarus {
 
 // read 'ikarusData' from localStorage
 export const getCachedIkarusData = (variant: "Heute" | "Morgen") => {
-  const cachedData = localStorage.getItem(`ikarusData${variant}`);
+  const cachedData = localStorage.getItem(`ikarusData_v1${variant}`);
   if (cachedData) {
     return JSON.parse(cachedData);
   }
@@ -20,6 +20,6 @@ export const getCachedIkarusData = (variant: "Heute" | "Morgen") => {
 // write 'ikarusData' to localStorage
 export const setCachedIkarusData = ({ variant, data }: setCachedIkarus) => {
   if (data.date !== "") {
-    localStorage.setItem(`ikarusData${variant}`, JSON.stringify(data));
+    localStorage.setItem(`ikarusData_v1${variant}`, JSON.stringify(data));
   }
 };

@@ -120,8 +120,8 @@ const ikarusFetch = async (
         keepalive: true,
         body: JSON.stringify(reqBody),
         method: "POST",
-        // revalidate every 5 minutes
-        next: { revalidate: 300 },
+        // revalidate every 4.5 minutes
+        next: { revalidate: 270 },
       }
     );
     if (res.ok) {
