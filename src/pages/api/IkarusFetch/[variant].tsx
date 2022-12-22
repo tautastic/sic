@@ -141,7 +141,7 @@ const IkarusFetchHandler = async (
     try {
       const response = await ikarusFetch(req.query.variant);
       res.setHeader("Content-Type", "application/json");
-      res.setHeader("Cache-Control", "max-age=60");
+      res.setHeader("Cache-Control", "max-age=270");
       if (response.date !== "") {
         res.status(200).end(JSON.stringify(response));
       } else {
