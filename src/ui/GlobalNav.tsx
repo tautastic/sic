@@ -8,6 +8,7 @@ import { HiBars3BottomLeft, HiXMark } from "react-icons/hi2";
 import clsx from "clsx";
 import { useState } from "react";
 import { GlobalNavSections } from "@/lib/GlobalNavSections";
+import Image from "next/image";
 
 export function GlobalNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,8 +26,16 @@ export function GlobalNav() {
           </div>
 
           <h3 className="font-semibold tracking-wide text-gray-400 group-hover:text-gray-50">
-            sic. <span className="Work in progress">🤒</span>
+            sic.
           </h3>
+          <Image
+            className={"inline-block"}
+            src={"/img/apple-touch-icon-180x180.png"}
+            alt={"🤒"}
+            role={"img"}
+            width={16}
+            height={16}
+          />
         </Link>
       </div>
       <button

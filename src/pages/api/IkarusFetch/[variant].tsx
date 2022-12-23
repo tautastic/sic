@@ -114,7 +114,7 @@ const ikarusFetch = async (
       {
         headers: {
           "Accept": "*/*",
-          "Accept-Encoding": "gzip, deflate, br",
+          "Accept-Encoding": "*",
           "Content-Type": "application/json",
         },
         keepalive: true,
@@ -139,21 +139,23 @@ const IkarusFetchHandler = async (
 ) => {
   if (req.query.variant === "Heute" || req.query.variant === "Morgen") {
     try {
-      const response = await ikarusFetch(req.query.variant);
       res.setHeader("Content-Type", "application/json");
-      res.setHeader("Cache-Control", "max-age=270");
+      res.setHeader("Cache-Control", "s-maxage=270, stale-while-revalidate");
+      const response = await ikarusFetch(req.query.variant);
       if (response.date !== "") {
         res.status(200).end(JSON.stringify(response));
       } else {
-        res.redirect(302, `/api/IkarusFetch/${req.query.variant}`);
+        // Wait 50ms then redirect to the same endpoint
+        setTimeout(() => {
+          res.setHeader("Cache-Control", "no-store");
+          res.redirect(307, `/api/IkarusFetch/${req.query.variant}`);
+        }, 50);
       }
     } catch (error) {
-      res.json(error);
-      res.status(500).end();
+      res.status(500).end(JSON.stringify(error));
     }
   } else {
-    res.json({ message: "Invalid variant" });
-    res.status(400).end();
+    res.status(400).end(JSON.stringify({ message: "Invalid variant" }));
   }
 };
 
