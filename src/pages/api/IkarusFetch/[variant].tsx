@@ -146,10 +146,9 @@ const IkarusFetchHandler = async (
         res.status(200).end(JSON.stringify(response));
       } else {
         // Wait 50ms then redirect to the same endpoint
-        setTimeout(() => {
-          res.setHeader("Cache-Control", "no-store");
-          res.redirect(307, `/api/IkarusFetch/${req.query.variant}`);
-        }, 50);
+        await new Promise((resolve) => setTimeout(resolve, 50));
+        res.setHeader("Cache-Control", "no-store");
+        res.redirect(307, `/api/IkarusFetch/${req.query.variant}`);
       }
     } catch (error) {
       res.status(500).end(JSON.stringify(error));
