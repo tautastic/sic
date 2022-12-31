@@ -1,9 +1,9 @@
 import "@/styles/globals.css";
 import type { ReactNode } from "react";
-import { NextSeo } from "next-seo";
 import { AddressBar } from "@/ui/AddressBar";
 import { GlobalNav } from "@/ui/GlobalNav";
 import { VercelLogo } from "@/ui/VercelLogo";
+import { NextSeo } from "next-seo";
 import SEO from "next-seo.config";
 
 const Byline = () => {

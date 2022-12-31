@@ -1,13 +1,13 @@
 "use client";
 
 import type { IkarusResponse } from "@/lib/types.ikarus";
-import { decode } from "html-entities";
-import { useEffect, useState } from "react";
-import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import { getCachedIkarusData, setCachedIkarusData } from "@/lib/IkarusCache";
+import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import { Boundary } from "@/ui/Boundary";
 import { IkarusTableLoading } from "@/ui/IkarusTableLoading";
+import { decode } from "html-entities";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const formatDate = (date: string) => {
   return new Date(
