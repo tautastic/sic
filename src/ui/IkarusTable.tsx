@@ -89,7 +89,7 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
         ]}>
         <div className="overflow-y-hidden overflow-x-scroll">
           {tableEntries.length > 0 ? (
-            <table className="w-full pl-4 text-sm text-gray-300">
+            <table className="w-full text-sm text-gray-300">
               <thead>
                 <tr className={"text-md"}>
                   <th className={"p-2"}>Stunde</th>
@@ -105,7 +105,10 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
               <tbody className="text-center">{...tableEntries}</tbody>
             </table>
           ) : (
-            <div className="text-center text-gray-400">Keine Vertretungen</div>
+            <div className="my-6 text-center leading-loose text-gray-400">
+              <p>Keine Vertretungen</p>
+              <p>&#x1F614; &#x1F62D;</p>
+            </div>
           )}
         </div>
       </Boundary>
