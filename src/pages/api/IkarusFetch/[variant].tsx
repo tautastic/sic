@@ -2,9 +2,21 @@ import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import type { NextApiRequest, NextApiResponse } from "next";
 
+const skipWeekend = (date: Date): number => {
+  if (date.getDay() === 0) {
+    // If today is Sunday, skip to Monday
+    date.setDate(date.getDate() + 1);
+  } else if (date.getDay() === 6) {
+    // If today is Saturday, skip to Monday
+    date.setDate(date.getDate() + 2);
+  }
+  return date.getDate();
+};
+
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dateToday = () => {
   const date = new Date();
+  date.setDate(skipWeekend(date));
   return date.toISOString().split("T")[0]?.replace(/-/g, "");
 };
 
@@ -12,6 +24,7 @@ const dateToday = () => {
 const dateTomorrow = () => {
   const date = new Date();
   date.setDate(date.getDate() + 1);
+  date.setDate(skipWeekend(date));
   return date.toISOString().split("T")[0]?.replace(/-/g, "");
 };
 

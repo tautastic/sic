@@ -9,6 +9,17 @@ import { Boundary } from "@/ui/Boundary";
 import { IkarusTableLoading } from "@/ui/IkarusTableLoading";
 import { usePathname } from "next/navigation";
 
+const formatDate = (date: string) => {
+  return new Date(
+    date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
+  ).toLocaleDateString("de-DE", {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+};
+
 interface IkarusTableProps {
   variant: "Heute" | "Morgen";
 }
@@ -46,8 +57,14 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
   if (ikarusState.date === "") {
     return <IkarusTableLoading />;
   } else {
+    const formattedDate = formatDate(ikarusState.date);
     return (
-      <Boundary labels={[`${variant}`, `Stand: ${ikarusState.lastUpdate}`]}>
+      <Boundary
+        labels={[
+          `${variant}`,
+          `${formattedDate}`,
+          `Stand: ${ikarusState.lastUpdate}`,
+        ]}>
         <div className="overflow-y-hidden overflow-x-scroll">
           <table className="w-full pl-4 text-sm text-gray-300">
             <thead>

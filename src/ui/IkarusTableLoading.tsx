@@ -2,7 +2,7 @@ import { Boundary } from "@/ui/Boundary";
 
 export const IkarusTableLoading = () => {
   return (
-    <Boundary labels={["Lade...", "Stand: Lade..."]}>
+    <Boundary labels={["Lade...", "Lade...", "Stand: Lade..."]}>
       <div className="overflow-y-hidden overflow-x-scroll">
         <table className="w-full pl-4 text-sm text-gray-300">
           <thead>
