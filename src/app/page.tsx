@@ -4,8 +4,6 @@ import Link from "next/link";
 const Page = () => {
   return (
     <div className="space-y-8">
-      <h1 className="text-xl font-medium text-gray-300">Index</h1>
-
       <div className="space-y-10 text-white">
         {GlobalNavSections.map((section) => {
           return (
