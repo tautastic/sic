@@ -107,7 +107,7 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
           ) : (
             <div className="my-6 text-center leading-loose text-gray-400">
               <p>Keine Vertretungen</p>
-              <p>&#x1F614; &#x1F62D;</p>
+              <p>&#x1F614;</p>
             </div>
           )}
         </div>
