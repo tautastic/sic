@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
-export function AddressBar() {
+export const AddressBar = () => {
   const pathname = usePathname();
 
   return (
@@ -56,4 +56,4 @@ export function AddressBar() {
       </div>
     </div>
   );
-}
+};

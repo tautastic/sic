@@ -1,4 +1,4 @@
-import IkarusTable from "@/ui/IkarusTable";
+import { IkarusTable } from "@/ui/IkarusTable";
 
 const Page = async () => {
   return (

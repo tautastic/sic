@@ -10,7 +10,35 @@ import { useState } from "react";
 import { GlobalNavSections } from "@/lib/GlobalNavSections";
 import Image from "next/image";
 
-export function GlobalNav() {
+interface GlobalNavItemProps {
+  item: GlobalNavParent;
+  close: () => false | void;
+}
+
+const GlobalNavItem = (props: GlobalNavItemProps) => {
+  const isActive =
+    props.item.slug === usePathname()?.split("/").at(-1)?.replace(/\D/g, "");
+  const href = props.item.slug
+    ? props.item.path + "/" + props.item.slug
+    : props.item.path;
+
+  return (
+    <Link
+      onClick={props.close}
+      href={href}
+      className={clsx(
+        "block rounded-md px-3 py-2 text-sm font-medium hover:text-gray-300",
+        {
+          "text-gray-400 hover:bg-gray-800": !isActive,
+          "font-bold text-white": isActive,
+        }
+      )}>
+      {props.item.name}
+    </Link>
+  );
+};
+
+export const GlobalNav = () => {
   const [isOpen, setIsOpen] = useState(false);
   const close = () => setIsOpen(false);
 
@@ -81,31 +109,4 @@ export function GlobalNav() {
       </div>
     </div>
   );
-}
-
-function GlobalNavItem({
-  item,
-  close,
-}: {
-  item: GlobalNavParent;
-  close: () => false | void;
-}) {
-  const isActive =
-    item.slug === usePathname()?.split("/").at(-1)?.replace(/\D/g, "");
-  const href = item.slug ? item.path + "/" + item.slug : item.path;
-
-  return (
-    <Link
-      onClick={close}
-      href={href}
-      className={clsx(
-        "block rounded-md px-3 py-2 text-sm font-medium hover:text-gray-300",
-        {
-          "text-gray-400 hover:bg-gray-800": !isActive,
-          "font-bold text-white": isActive,
-        }
-      )}>
-      {item.name}
-    </Link>
-  );
-}
+};
