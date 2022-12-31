@@ -66,46 +66,50 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
           `Stand: ${ikarusState.lastUpdate}`,
         ]}>
         <div className="overflow-y-hidden overflow-x-scroll">
-          <table className="w-full pl-4 text-sm text-gray-300">
-            <thead>
-              <tr className={"text-md"}>
-                <th className={"p-2"}>Stunde</th>
-                <th className={"p-2"}>Zeit</th>
-                <th className={"p-2"}>Klassen</th>
-                <th className={"p-2"}>Fach</th>
-                <th className={"p-2"}>Raum</th>
-                <th className={"p-2"}>Lehrkraft</th>
-                <th className={"p-2"}>Info</th>
-                <th className={"p-2"}>Vertretungstext</th>
-              </tr>
-            </thead>
-            <tbody className="text-center">
-              {ikarusState.rows.map((x, idx) => {
-                if (
-                  slug === "k" ||
-                  (slug !== undefined && x.classes.includes(slug))
-                ) {
-                  return (
-                    <tr key={idx}>
-                      <td className={"p-2"}>{decode(x.period)}</td>
-                      <td className={"p-2"}>{decode(x.time)}</td>
-                      <td className={"p-2"}>{decode(x.classes)}</td>
-                      <td className={"p-2"}>{decode(x.subject)}</td>
-                      <td className={"p-2"}>{decode(x.room)}</td>
-                      <td className={"p-2"}>
-                        <span className="font-bold">
-                          {decode(x.substituteTeacher)}{" "}
-                        </span>
-                        {decode(x.originalTeacher)}
-                      </td>
-                      <td className={"p-2"}>{decode(x.info)}</td>
-                      <td className={"p-2"}>{decode(x.text)}</td>
-                    </tr>
-                  );
-                }
-              })}
-            </tbody>
-          </table>
+          {ikarusState.rows.length > 0 ? (
+            <table className="w-full pl-4 text-sm text-gray-300">
+              <thead>
+                <tr className={"text-md"}>
+                  <th className={"p-2"}>Stunde</th>
+                  <th className={"p-2"}>Zeit</th>
+                  <th className={"p-2"}>Klassen</th>
+                  <th className={"p-2"}>Fach</th>
+                  <th className={"p-2"}>Raum</th>
+                  <th className={"p-2"}>Lehrkraft</th>
+                  <th className={"p-2"}>Info</th>
+                  <th className={"p-2"}>Vertretungstext</th>
+                </tr>
+              </thead>
+              <tbody className="text-center">
+                {ikarusState.rows.map((x, idx) => {
+                  if (
+                    slug === "k" ||
+                    (slug !== undefined && x.classes.includes(slug))
+                  ) {
+                    return (
+                      <tr key={idx}>
+                        <td className={"p-2"}>{decode(x.period)}</td>
+                        <td className={"p-2"}>{decode(x.time)}</td>
+                        <td className={"p-2"}>{decode(x.classes)}</td>
+                        <td className={"p-2"}>{decode(x.subject)}</td>
+                        <td className={"p-2"}>{decode(x.room)}</td>
+                        <td className={"p-2"}>
+                          <span className="font-bold">
+                            {decode(x.substituteTeacher)}{" "}
+                          </span>
+                          {decode(x.originalTeacher)}
+                        </td>
+                        <td className={"p-2"}>{decode(x.info)}</td>
+                        <td className={"p-2"}>{decode(x.text)}</td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+            </table>
+          ) : (
+            <div className="text-center text-gray-400">Keine Vertretungen</div>
+          )}
         </div>
       </Boundary>
     );
