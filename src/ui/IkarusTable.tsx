@@ -54,10 +54,32 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
     getData();
   }, [variant]);
 
-  if (ikarusState.date === "") {
-    return <IkarusTableLoading />;
-  } else {
+  if (ikarusState.date !== "") {
     const formattedDate = formatDate(ikarusState.date);
+    const tableEntries: JSX.Element[] = [];
+
+    for (const row of ikarusState.rows) {
+      if (slug === "k" || (slug !== undefined && row.classes.includes(slug))) {
+        tableEntries.push(
+          <tr>
+            <td className={"p-2"}>{decode(row.period)}</td>
+            <td className={"p-2"}>{decode(row.time)}</td>
+            <td className={"p-2"}>{decode(row.classes)}</td>
+            <td className={"p-2"}>{decode(row.subject)}</td>
+            <td className={"p-2"}>{decode(row.room)}</td>
+            <td className={"p-2"}>
+              <span className="font-bold">
+                {decode(row.substituteTeacher)}{" "}
+              </span>
+              {decode(row.originalTeacher)}
+            </td>
+            <td className={"p-2"}>{decode(row.info)}</td>
+            <td className={"p-2"}>{decode(row.text)}</td>
+          </tr>
+        );
+      }
+    }
+
     return (
       <Boundary
         labels={[
@@ -66,7 +88,7 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
           `Stand: ${ikarusState.lastUpdate}`,
         ]}>
         <div className="overflow-y-hidden overflow-x-scroll">
-          {ikarusState.rows.length > 0 ? (
+          {tableEntries.length > 0 ? (
             <table className="w-full pl-4 text-sm text-gray-300">
               <thead>
                 <tr className={"text-md"}>
@@ -80,32 +102,7 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
                   <th className={"p-2"}>Vertretungstext</th>
                 </tr>
               </thead>
-              <tbody className="text-center">
-                {ikarusState.rows.map((x, idx) => {
-                  if (
-                    slug === "k" ||
-                    (slug !== undefined && x.classes.includes(slug))
-                  ) {
-                    return (
-                      <tr key={idx}>
-                        <td className={"p-2"}>{decode(x.period)}</td>
-                        <td className={"p-2"}>{decode(x.time)}</td>
-                        <td className={"p-2"}>{decode(x.classes)}</td>
-                        <td className={"p-2"}>{decode(x.subject)}</td>
-                        <td className={"p-2"}>{decode(x.room)}</td>
-                        <td className={"p-2"}>
-                          <span className="font-bold">
-                            {decode(x.substituteTeacher)}{" "}
-                          </span>
-                          {decode(x.originalTeacher)}
-                        </td>
-                        <td className={"p-2"}>{decode(x.info)}</td>
-                        <td className={"p-2"}>{decode(x.text)}</td>
-                      </tr>
-                    );
-                  }
-                })}
-              </tbody>
+              <tbody className="text-center">{...tableEntries}</tbody>
             </table>
           ) : (
             <div className="text-center text-gray-400">Keine Vertretungen</div>
@@ -113,5 +110,7 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
         </div>
       </Boundary>
     );
+  } else {
+    return <IkarusTableLoading />;
   }
 };
