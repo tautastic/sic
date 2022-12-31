@@ -1,17 +1,30 @@
 "use client";
 
 import type { IkarusResponse } from "@/lib/types.ikarus";
-import { decode } from "html-entities";
-import { useEffect, useState } from "react";
-import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import { getCachedIkarusData, setCachedIkarusData } from "@/lib/IkarusCache";
+import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import { Boundary } from "@/ui/Boundary";
+import { IkarusTableLoading } from "@/ui/IkarusTableLoading";
+import { decode } from "html-entities";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
+
+const formatDate = (date: string) => {
+  return new Date(
+    date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
+  ).toLocaleDateString("de-DE", {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+};
 
 interface IkarusTableProps {
   variant: "Heute" | "Morgen";
 }
-const IkarusTable = ({ variant }: IkarusTableProps) => {
+
+export const IkarusTable = ({ variant }: IkarusTableProps) => {
   const [ikarusState, setIkarusState] = useState(DefaultIkarusResponse);
   const slug = usePathname()?.split("/").at(-1);
 
@@ -41,52 +54,64 @@ const IkarusTable = ({ variant }: IkarusTableProps) => {
     getData();
   }, [variant]);
 
-  return (
-    <Boundary labels={[`${variant}`, `Stand: ${ikarusState.lastUpdate}`]}>
-      <div className="overflow-y-hidden overflow-x-scroll">
-        <table className="w-full pl-4 text-sm text-gray-300">
-          <thead>
-            <tr className={"text-md"}>
-              <th className={"p-2"}>Stunde</th>
-              <th className={"p-2"}>Zeit</th>
-              <th className={"p-2"}>Klassen</th>
-              <th className={"p-2"}>Fach</th>
-              <th className={"p-2"}>Raum</th>
-              <th className={"p-2"}>Lehrkraft</th>
-              <th className={"p-2"}>Info</th>
-              <th className={"p-2"}>Vertretungstext</th>
-            </tr>
-          </thead>
-          <tbody className="text-center">
-            {ikarusState.rows.map((x, idx) => {
-              if (
-                slug === "k" ||
-                (slug !== undefined && x.classes.includes(slug))
-              ) {
-                return (
-                  <tr key={idx}>
-                    <td className={"p-2"}>{decode(x.period)}</td>
-                    <td className={"p-2"}>{decode(x.time)}</td>
-                    <td className={"p-2"}>{decode(x.classes)}</td>
-                    <td className={"p-2"}>{decode(x.subject)}</td>
-                    <td className={"p-2"}>{decode(x.room)}</td>
-                    <td className={"p-2"}>
-                      <span className="font-bold">
-                        {decode(x.substituteTeacher)}{" "}
-                      </span>
-                      {decode(x.originalTeacher)}
-                    </td>
-                    <td className={"p-2"}>{decode(x.info)}</td>
-                    <td className={"p-2"}>{decode(x.text)}</td>
-                  </tr>
-                );
-              }
-            })}
-          </tbody>
-        </table>
-      </div>
-    </Boundary>
-  );
+  if (ikarusState.date === "") {
+    return <IkarusTableLoading />;
+  } else {
+    const formattedDate = formatDate(ikarusState.date);
+    return (
+      <Boundary
+        labels={[
+          `${variant}`,
+          `${formattedDate}`,
+          `Stand: ${ikarusState.lastUpdate}`,
+        ]}>
+        <div className="overflow-y-hidden overflow-x-scroll">
+          {ikarusState.rows.length > 0 ? (
+            <table className="w-full pl-4 text-sm text-gray-300">
+              <thead>
+                <tr className={"text-md"}>
+                  <th className={"p-2"}>Stunde</th>
+                  <th className={"p-2"}>Zeit</th>
+                  <th className={"p-2"}>Klassen</th>
+                  <th className={"p-2"}>Fach</th>
+                  <th className={"p-2"}>Raum</th>
+                  <th className={"p-2"}>Lehrkraft</th>
+                  <th className={"p-2"}>Info</th>
+                  <th className={"p-2"}>Vertretungstext</th>
+                </tr>
+              </thead>
+              <tbody className="text-center">
+                {ikarusState.rows.map((x, idx) => {
+                  if (
+                    slug === "k" ||
+                    (slug !== undefined && x.classes.includes(slug))
+                  ) {
+                    return (
+                      <tr key={idx}>
+                        <td className={"p-2"}>{decode(x.period)}</td>
+                        <td className={"p-2"}>{decode(x.time)}</td>
+                        <td className={"p-2"}>{decode(x.classes)}</td>
+                        <td className={"p-2"}>{decode(x.subject)}</td>
+                        <td className={"p-2"}>{decode(x.room)}</td>
+                        <td className={"p-2"}>
+                          <span className="font-bold">
+                            {decode(x.substituteTeacher)}{" "}
+                          </span>
+                          {decode(x.originalTeacher)}
+                        </td>
+                        <td className={"p-2"}>{decode(x.info)}</td>
+                        <td className={"p-2"}>{decode(x.text)}</td>
+                      </tr>
+                    );
+                  }
+                })}
+              </tbody>
+            </table>
+          ) : (
+            <div className="text-center text-gray-400">Keine Vertretungen</div>
+          )}
+        </div>
+      </Boundary>
+    );
+  }
 };
-
-export default IkarusTable;

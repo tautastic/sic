@@ -10,7 +10,6 @@
     "start": "next start"
   },
   "dependencies": {
-    "@tailwindcss/forms": "^0.5.3",
     "clsx": "^1.2.1",
     "html-entities": "^2.3.3",
     "next": "^13.1.0",

@@ -2,32 +2,43 @@ import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 import type { NextApiRequest, NextApiResponse } from "next";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const vercel_env = process.env.VERCEL_ENV;
+
 const dateToday = () => {
-  const date = new Date();
-  return date.toISOString().split("T")[0]?.replace(/-/g, "");
+  if (vercel_env === "preview") {
+    return "20221221";
+  } else {
+    const date = new Date();
+    // Skip weekends
+    if (date.getDay() === 6) {
+      date.setDate(date.getDate() + 2);
+    } else if (date.getDay() === 0) {
+      date.setDate(date.getDate() + 1);
+    }
+    return date.toISOString().split("T")[0]?.replace(/-/g, "");
+  }
 };
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dateTomorrow = () => {
-  const date = new Date();
-  date.setDate(date.getDate() + 1);
-  return date.toISOString().split("T")[0]?.replace(/-/g, "");
-};
-
-const testingDateHeute = () => {
-  return "20221221";
-};
-
-const testingDateMorgen = () => {
-  return "20221222";
+  if (vercel_env === "preview") {
+    return "20221222";
+  } else {
+    const date = new Date();
+    // Skip weekends
+    if (date.getDay() === 5 || date.getDay() === 6) {
+      date.setDate(date.getDate() + 2);
+    } else if (date.getDay() === 0) {
+      date.setDate(date.getDate() + 1);
+    }
+    date.setDate(date.getDate() + 1);
+    return date.toISOString().split("T")[0]?.replace(/-/g, "");
+  }
 };
 
 const makeReqBody = (variant: "Heute" | "Morgen") => {
   return {
     activityTypeIds: [3],
-    // TODO: Change to dateToday() and dateTomorrow() after testing
-    date: variant === "Heute" ? testingDateHeute() : testingDateMorgen(),
+    date: variant === "Heute" ? dateToday() : dateTomorrow(),
     dateOffset: 0,
     departmentElementType: -1,
     departmentIds: [],
