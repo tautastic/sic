@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import type { ReactNode } from "react";
+import { AnalyticsWrapper } from "@/app/analytics";
 import { AddressBar } from "@/ui/AddressBar";
 import { GlobalNav } from "@/ui/GlobalNav";
 import { VercelLogo } from "@/ui/VercelLogo";
@@ -53,6 +54,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
           {...SEO}
           useAppDir={true}
         />
+        <AnalyticsWrapper />
       </head>
       <body className="overflow-y-scroll bg-gray-1100 bg-[url('/img/grid.svg')]">
         <GlobalNav />
