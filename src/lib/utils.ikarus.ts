@@ -32,6 +32,17 @@ const DateTomorrow = () => {
   }
 };
 
+const FormatDate = (date: string) => {
+  return new Date(
+    date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
+  ).toLocaleDateString("de-DE", {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+};
+
 const requestBody = (variant: "Heute" | "Morgen") => {
   return {
     date: variant === "Heute" ? DateToday() : DateTomorrow(),
@@ -125,4 +136,4 @@ const IkarusFetch = async (
   return DefaultIkarusResponse;
 };
 
-export { DateToday, DateTomorrow, IkarusFetch };
+export { DateToday, DateTomorrow, FormatDate, IkarusFetch };

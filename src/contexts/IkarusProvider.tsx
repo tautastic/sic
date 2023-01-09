@@ -9,29 +9,24 @@ import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 // The IkarusContext stores an object containing two IkarusResponses, 'Heute' and 'Morgen'
 // and a boolean indicating if they're currently being fetched
 export const IkarusContext = createContext<{
-  ikarus: {
-    Heute: IkarusResponse;
-    Morgen: IkarusResponse;
-  };
+  ikarusHeute: IkarusResponse;
+  ikarusMorgen: IkarusResponse;
   isFetching: boolean;
 }>({
-  ikarus: {
-    Heute: DefaultIkarusResponse,
-    Morgen: DefaultIkarusResponse,
-  },
+  ikarusHeute: DefaultIkarusResponse,
+  ikarusMorgen: DefaultIkarusResponse,
   isFetching: false,
 });
 
 // The IkarusProvider is a wrapper for the whole page that fetches the data and stores it in the context
 export const IkarusProvider = ({ children }: { children: ReactNode }) => {
   const [isFetching, setIsFetching] = useState(false);
-  const [ikarus, setIkarus] = useState<{
-    Heute: IkarusResponse;
-    Morgen: IkarusResponse;
-  }>({
-    Heute: DefaultIkarusResponse,
-    Morgen: DefaultIkarusResponse,
-  });
+  const [ikarusHeute, setIkarusHeute] = useState<IkarusResponse>(
+    DefaultIkarusResponse
+  );
+  const [ikarusMorgen, setIkarusMorgen] = useState<IkarusResponse>(
+    DefaultIkarusResponse
+  );
 
   // This function fetches the data from the API and stores it in the context
   const fetchIkarus = async () => {
@@ -49,10 +44,8 @@ export const IkarusProvider = ({ children }: { children: ReactNode }) => {
       }),
     ]);
 
-    setIkarus({
-      Heute: heute,
-      Morgen: morgen,
-    });
+    setIkarusHeute(heute);
+    setIkarusMorgen(morgen);
   };
 
   // The useEffect hook is called when the page is loaded
@@ -81,7 +74,7 @@ export const IkarusProvider = ({ children }: { children: ReactNode }) => {
 
   // Return the context and a function to fetch the data
   return (
-    <IkarusContext.Provider value={{ ikarus, isFetching }}>
+    <IkarusContext.Provider value={{ ikarusHeute, ikarusMorgen, isFetching }}>
       {children}
     </IkarusContext.Provider>
   );

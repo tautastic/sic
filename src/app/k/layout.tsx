@@ -9,7 +9,6 @@ const Layout = ({ children }: { children: ReactNode }) => {
       <div className="flex justify-between">
         <TabGroup />
       </div>
-
       <IkarusProvider>{children}</IkarusProvider>
     </div>
   );
