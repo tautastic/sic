@@ -6,10 +6,14 @@ const DateToday = () => {
     return "20221221";
   } else {
     const date = new Date();
+    date.setDate(date.getDate() + 1);
     // Skip weekends
     if (date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
     } else if (date.getDay() === 0) {
+      date.setDate(date.getDate() + 1);
+    }
+    if (20 <= date.getHours()) {
       date.setDate(date.getDate() + 1);
     }
     return date.toISOString().split("T")[0]?.replace(/-/g, "");
@@ -21,10 +25,14 @@ const DateTomorrow = () => {
     return "20221222";
   } else {
     const date = new Date();
+    date.setDate(date.getDate() + 1);
     // Skip weekends
     if (date.getDay() === 5 || date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
     } else if (date.getDay() === 0) {
+      date.setDate(date.getDate() + 1);
+    }
+    if (20 <= date.getHours()) {
       date.setDate(date.getDate() + 1);
     }
     date.setDate(date.getDate() + 1);

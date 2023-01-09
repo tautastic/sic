@@ -25,7 +25,9 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
 
   return (
     <Suspense fallback={<IkarusTableLoading />}>
-      {!isFetching ? (
+      {isFetching && ikarusState.date === "" ? (
+        <IkarusTableLoading />
+      ) : (
         <Boundary
           labels={[
             `${variant}`,
@@ -37,32 +39,32 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
               <table className="w-full text-sm text-gray-300">
                 <thead>
                   <tr className={"text-md"}>
-                    <th className={"p-2"}>Stunde</th>
-                    <th className={"p-2"}>Zeit</th>
-                    <th className={"p-2"}>Klassen</th>
-                    <th className={"p-2"}>Fach</th>
-                    <th className={"p-2"}>Raum</th>
-                    <th className={"p-2"}>Lehrkraft</th>
-                    <th className={"p-2"}>Info</th>
-                    <th className={"p-2"}>Vertretungstext</th>
+                    <th className="min-w-[64px] p-2">Stunde</th>
+                    <th className="min-w-[64px] p-2">Zeit</th>
+                    <th className="min-w-[128px] p-2">Klassen</th>
+                    <th className="min-w-[64px] p-2">Fach</th>
+                    <th className="min-w-[64px] p-2">Raum</th>
+                    <th className="min-w-[64px] p-2">Lehrkraft</th>
+                    <th className="min-w-[64px] p-2">Info</th>
+                    <th className="min-w-[64px] p-2">Vertretungstext</th>
                   </tr>
                 </thead>
                 <tbody className="text-center">
                   {tableEntries.map((row) => (
                     <tr key={row.period + row.classes}>
-                      <td className={"p-2"}>{decode(row.period)}</td>
-                      <td className={"p-2"}>{decode(row.time)}</td>
-                      <td className={"p-2"}>{decode(row.classes)}</td>
-                      <td className={"p-2"}>{decode(row.subject)}</td>
-                      <td className={"p-2"}>{decode(row.room)}</td>
-                      <td className={"p-2"}>
+                      <td className="p-2">{decode(row.period)}</td>
+                      <td className="p-2">{decode(row.time)}</td>
+                      <td className="p-2">{decode(row.classes)}</td>
+                      <td className="p-2">{decode(row.subject)}</td>
+                      <td className="p-2">{decode(row.room)}</td>
+                      <td className="p-2">
                         <span className="font-bold">
                           {decode(row.substituteTeacher)}{" "}
                         </span>
                         {decode(row.originalTeacher)}
                       </td>
-                      <td className={"p-2"}>{decode(row.info)}</td>
-                      <td className={"p-2"}>{decode(row.text)}</td>
+                      <td className="p-2">{decode(row.info)}</td>
+                      <td className="p-2">{decode(row.text)}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -75,8 +77,6 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
             )}
           </div>
         </Boundary>
-      ) : (
-        <IkarusTableLoading />
       )}
     </Suspense>
   );
