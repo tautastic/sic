@@ -1,12 +1,8 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-
 import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 
-const vercel_env = process.env.VERCEL_ENV;
-
-const dateToday = () => {
-  if (vercel_env === "preview") {
+const DateToday = () => {
+  if (process.env.VERCEL_ENV === "preview") {
     return "20221221";
   } else {
     const date = new Date();
@@ -20,8 +16,8 @@ const dateToday = () => {
   }
 };
 
-const dateTomorrow = () => {
-  if (vercel_env === "preview") {
+const DateTomorrow = () => {
+  if (process.env.VERCEL_ENV === "preview") {
     return "20221222";
   } else {
     const date = new Date();
@@ -36,18 +32,12 @@ const dateTomorrow = () => {
   }
 };
 
-const makeReqBody = (variant: "Heute" | "Morgen") => {
+const requestBody = (variant: "Heute" | "Morgen") => {
   return {
-    activityTypeIds: [3],
-    date: variant === "Heute" ? dateToday() : dateTomorrow(),
+    date: variant === "Heute" ? DateToday() : DateTomorrow(),
     dateOffset: 0,
-    departmentElementType: -1,
     departmentIds: [],
-    enableSubstitutionFrom: false,
     formatName: variant,
-    groupBy: -1,
-    hideAbsent: false,
-    hideCancelCausedByEvent: false,
     hideCancelWithSubstitution: true,
     mergeBlocks: true,
     schoolName: "hh5837",
@@ -58,25 +48,16 @@ const makeReqBody = (variant: "Heute" | "Morgen") => {
     showCancel: true,
     showClass: true,
     showEvent: true,
-    showExamSupervision: false,
     showHour: true,
     showInfo: true,
     showMessages: true,
-    showOnlyCancel: false,
     showOnlyFutureSub: true,
     showRoom: true,
-    showStudentgroup: false,
     showSubject: true,
     showSubstText: true,
-    showSubstTypeColor: false,
     showSubstitutionFrom: 0,
     showTeacher: true,
-    showTeacherOnEvent: false,
     showTime: true,
-    showUnheraldedExams: false,
-    showUnitTime: false,
-    strikethrough: false,
-    strikethroughAbsentTeacher: false,
   };
 };
 
@@ -116,11 +97,11 @@ const parseIkarusRes: (res: Response) => Promise<IkarusResponse> = async (
   };
 };
 
-const ikarusFetch = async (
+const IkarusFetch = async (
   variant: "Heute" | "Morgen"
 ): Promise<IkarusResponse> => {
   try {
-    const reqBody = makeReqBody(variant);
+    const reqBody = requestBody(variant);
     const res = await fetch(
       "https://ikarus.webuntis.com/WebUntis/monitor/substitution/data?school=hh5837",
       {
@@ -132,43 +113,16 @@ const ikarusFetch = async (
         keepalive: true,
         body: JSON.stringify(reqBody),
         method: "POST",
-        // revalidate every 4.5 minutes
-        next: { revalidate: 270 },
+        cache: "no-store",
       }
     );
     if (res.ok) {
       return await parseIkarusRes(res);
     }
   } catch (error) {
-    // console.log(error);
+    console.log(error);
   }
   return DefaultIkarusResponse;
 };
 
-const IkarusFetchHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse<IkarusResponse | unknown>
-) => {
-  if (req.query.variant === "Heute" || req.query.variant === "Morgen") {
-    try {
-      res.setHeader("Content-Type", "application/json");
-      res.setHeader("Cache-Control", "s-maxage=270, stale-while-revalidate");
-      res.setHeader("Encoding", "gzip, deflate, br");
-      const response = await ikarusFetch(req.query.variant);
-      if (response.date !== "") {
-        res.status(200).end(JSON.stringify(response));
-      } else {
-        // Wait 10ms then redirect to the same endpoint
-        await new Promise((resolve) => setTimeout(resolve, 10));
-        res.setHeader("Cache-Control", "no-store");
-        res.redirect(307, `/api/IkarusFetch/${req.query.variant}`);
-      }
-    } catch (error) {
-      res.status(500).end(JSON.stringify(error));
-    }
-  } else {
-    res.status(400).end(JSON.stringify({ message: "Invalid variant" }));
-  }
-};
-
-export default IkarusFetchHandler;
+export { DateToday, DateTomorrow, IkarusFetch };

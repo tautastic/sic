@@ -12,6 +12,7 @@
   "dependencies": {
     "@vercel/analytics": "^0.1.6",
     "clsx": "^1.2.1",
+    "memory-cache": "^0.2.0",
     "next": "^13.1.1",
     "next-seo": "^5.15.0",
     "react": "^18.2.0",
@@ -19,6 +20,7 @@
     "react-icons": "^4.7.1"
   },
   "devDependencies": {
+    "@types/memory-cache": "^0.2.2",
     "@types/node": "^18.11.18",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.10",
