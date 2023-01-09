@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
 import { TabGroup } from "@/ui/TabGroup";
+import { IkarusProvider } from "@/contexts/IkarusProvider";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
@@ -9,7 +10,7 @@ const Layout = ({ children }: { children: ReactNode }) => {
         <TabGroup />
       </div>
 
-      <div>{children}</div>
+      <IkarusProvider>{children}</IkarusProvider>
     </div>
   );
 };
