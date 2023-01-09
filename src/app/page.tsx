@@ -1,5 +1,6 @@
-import { GlobalNavSections } from "@/lib/GlobalNavSections";
 import Link from "next/link";
+
+import { GlobalNavSections } from "@/lib/GlobalNavSections";
 
 const Page = () => {
   return (

@@ -1,6 +1,7 @@
+import type { NextApiRequest, NextApiResponse } from "next";
+
 import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
-import type { NextApiRequest, NextApiResponse } from "next";
 
 const vercel_env = process.env.VERCEL_ENV;
 
@@ -152,12 +153,13 @@ const IkarusFetchHandler = async (
     try {
       res.setHeader("Content-Type", "application/json");
       res.setHeader("Cache-Control", "s-maxage=270, stale-while-revalidate");
+      res.setHeader("Encoding", "gzip, deflate, br");
       const response = await ikarusFetch(req.query.variant);
       if (response.date !== "") {
         res.status(200).end(JSON.stringify(response));
       } else {
-        // Wait 50ms then redirect to the same endpoint
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        // Wait 10ms then redirect to the same endpoint
+        await new Promise((resolve) => setTimeout(resolve, 10));
         res.setHeader("Cache-Control", "no-store");
         res.redirect(307, `/api/IkarusFetch/${req.query.variant}`);
       }

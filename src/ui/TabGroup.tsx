@@ -1,8 +1,9 @@
 "use client";
 
-import { IkarusGrades } from "@/lib/IkarusGrades";
-import { Tab } from "@/ui/Tab";
 import { usePathname } from "next/navigation";
+
+import { Tab } from "@/ui/Tab";
+import { IkarusGrades } from "@/lib/IkarusGrades";
 
 export const TabGroup = () => {
   const slug = usePathname()?.split("/").at(-1)?.replace(/\D/g, "");

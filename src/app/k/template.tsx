@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+
 import { TabGroup } from "@/ui/TabGroup";
 
 const Template = ({ children }: { children: ReactNode }) => {

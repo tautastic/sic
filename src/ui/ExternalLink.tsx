@@ -1,5 +1,5 @@
-import { BiLinkExternal } from "react-icons/bi";
 import type { ReactNode } from "react";
+import { BiLinkExternal } from "react-icons/bi";
 
 interface ExternalLinkProps {
   children: ReactNode;
