@@ -3,11 +3,6 @@
 import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 
-interface setCachedIkarus {
-  variant: "Heute" | "Morgen";
-  data: IkarusResponse;
-}
-
 // read 'ikarusData' from localStorage
 export const getCachedIkarusData = (variant: "Heute" | "Morgen") => {
   const cachedData = localStorage.getItem(`ikarusData_v1${variant}`);
@@ -18,7 +13,13 @@ export const getCachedIkarusData = (variant: "Heute" | "Morgen") => {
 };
 
 // write 'ikarusData' to localStorage
-export const setCachedIkarusData = ({ variant, data }: setCachedIkarus) => {
+export const setCachedIkarusData = ({
+  variant,
+  data,
+}: {
+  variant: "Heute" | "Morgen";
+  data: IkarusResponse;
+}) => {
   if (data.date !== "") {
     localStorage.setItem(`ikarusData_v1${variant}`, JSON.stringify(data));
   }

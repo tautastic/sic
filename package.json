@@ -1,6 +1,6 @@
 {
   "name": "sic",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "lint": "next lint",
@@ -10,16 +10,12 @@
     "start": "next start"
   },
   "dependencies": {
-    "@vercel/analytics": "^0.1.6",
     "clsx": "^1.2.1",
-    "html-entities": "^2.3.3",
     "next": "^13.1.1",
     "next-seo": "^5.15.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-icons": "^4.7.1",
-    "server-only": "^0.0.1",
-    "sharp": "^0.31.3"
+    "react-icons": "^4.7.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.18",
