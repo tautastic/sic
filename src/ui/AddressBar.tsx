@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
+import { Fragment } from "react";
 import { usePathname } from "next/navigation";
 
 export const AddressBar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="flex items-center space-x-2 p-3.5 lg:px-5 lg:py-3">
+    <div className="flex items-center gap-x-2 p-3.5 lg:px-5 lg:py-3">
       <div className="text-gray-600">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -21,12 +22,10 @@ export const AddressBar = () => {
           />
         </svg>
       </div>
-      <div className="flex space-x-1 text-sm font-medium">
-        <div>
-          <Link href={"/"}>
-            <span className="px-2 text-gray-400">sic-iota.vercel.app</span>
-          </Link>
-        </div>
+      <div className="flex gap-x-1 text-sm font-medium">
+        <Link href={"/"}>
+          <span className="px-2 text-gray-400">sic-iota.vercel.app</span>
+        </Link>
         {pathname ? (
           <>
             {pathname
@@ -37,18 +36,14 @@ export const AddressBar = () => {
                   return null;
                 }
                 return (
-                  <Link
-                    key={segment}
-                    href={pathname?.split(segment)[0] + segment}>
+                  <Fragment key={segment}>
                     <span className="text-gray-600">/</span>
-                    <span>
-                      <span
-                        key={segment}
-                        className="animate-[highlight_1s_ease-in-out_1] rounded-full px-1.5 py-0.5 text-gray-100">
+                    <Link href={pathname?.split(segment)[0] + segment}>
+                      <span className="animate-[highlight_1s_ease-in-out_1] rounded-full px-1.5 py-0.5 text-gray-100">
                         {segment}
                       </span>
-                    </span>
-                  </Link>
+                    </Link>
+                  </Fragment>
                 );
               })}
           </>

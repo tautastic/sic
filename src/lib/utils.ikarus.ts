@@ -1,33 +1,38 @@
 import type { IkarusResponse } from "@/lib/types.ikarus";
 import { DefaultIkarusResponse } from "@/lib/types.ikarus";
-import type { NextApiRequest, NextApiResponse } from "next";
 
-const vercel_env = process.env.VERCEL_ENV;
-
-const dateToday = () => {
-  if (vercel_env === "preview") {
+const DateToday = () => {
+  if (process.env.VERCEL_ENV === "preview") {
     return "20221221";
   } else {
     const date = new Date();
+    date.setDate(date.getDate() + 1);
     // Skip weekends
     if (date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
     } else if (date.getDay() === 0) {
       date.setDate(date.getDate() + 1);
     }
+    if (20 <= date.getHours()) {
+      date.setDate(date.getDate() + 1);
+    }
     return date.toISOString().split("T")[0]?.replace(/-/g, "");
   }
 };
 
-const dateTomorrow = () => {
-  if (vercel_env === "preview") {
+const DateTomorrow = () => {
+  if (process.env.VERCEL_ENV === "preview") {
     return "20221222";
   } else {
     const date = new Date();
+    date.setDate(date.getDate() + 1);
     // Skip weekends
     if (date.getDay() === 5 || date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
     } else if (date.getDay() === 0) {
+      date.setDate(date.getDate() + 1);
+    }
+    if (20 <= date.getHours()) {
       date.setDate(date.getDate() + 1);
     }
     date.setDate(date.getDate() + 1);
@@ -35,18 +40,23 @@ const dateTomorrow = () => {
   }
 };
 
-const makeReqBody = (variant: "Heute" | "Morgen") => {
+const FormatDate = (date: string) => {
+  return new Date(
+    date.slice(0, 4) + "-" + date.slice(4, 6) + "-" + date.slice(6, 8)
+  ).toLocaleDateString("de-DE", {
+    weekday: "long",
+    year: "numeric",
+    month: "numeric",
+    day: "numeric",
+  });
+};
+
+const requestBody = (variant: "Heute" | "Morgen") => {
   return {
-    activityTypeIds: [3],
-    date: variant === "Heute" ? dateToday() : dateTomorrow(),
+    date: variant === "Heute" ? DateToday() : DateTomorrow(),
     dateOffset: 0,
-    departmentElementType: -1,
     departmentIds: [],
-    enableSubstitutionFrom: false,
     formatName: variant,
-    groupBy: -1,
-    hideAbsent: false,
-    hideCancelCausedByEvent: false,
     hideCancelWithSubstitution: true,
     mergeBlocks: true,
     schoolName: "hh5837",
@@ -57,25 +67,16 @@ const makeReqBody = (variant: "Heute" | "Morgen") => {
     showCancel: true,
     showClass: true,
     showEvent: true,
-    showExamSupervision: false,
     showHour: true,
     showInfo: true,
     showMessages: true,
-    showOnlyCancel: false,
     showOnlyFutureSub: true,
     showRoom: true,
-    showStudentgroup: false,
     showSubject: true,
     showSubstText: true,
-    showSubstTypeColor: false,
     showSubstitutionFrom: 0,
     showTeacher: true,
-    showTeacherOnEvent: false,
     showTime: true,
-    showUnheraldedExams: false,
-    showUnitTime: false,
-    strikethrough: false,
-    strikethroughAbsentTeacher: false,
   };
 };
 
@@ -115,11 +116,11 @@ const parseIkarusRes: (res: Response) => Promise<IkarusResponse> = async (
   };
 };
 
-const ikarusFetch = async (
+const IkarusFetch = async (
   variant: "Heute" | "Morgen"
 ): Promise<IkarusResponse> => {
   try {
-    const reqBody = makeReqBody(variant);
+    const reqBody = requestBody(variant);
     const res = await fetch(
       "https://ikarus.webuntis.com/WebUntis/monitor/substitution/data?school=hh5837",
       {
@@ -131,42 +132,16 @@ const ikarusFetch = async (
         keepalive: true,
         body: JSON.stringify(reqBody),
         method: "POST",
-        // revalidate every 4.5 minutes
-        next: { revalidate: 270 },
+        cache: "no-store",
       }
     );
     if (res.ok) {
       return await parseIkarusRes(res);
     }
   } catch (error) {
-    // console.log(error);
+    console.log(error);
   }
   return DefaultIkarusResponse;
 };
 
-const IkarusFetchHandler = async (
-  req: NextApiRequest,
-  res: NextApiResponse<IkarusResponse | unknown>
-) => {
-  if (req.query.variant === "Heute" || req.query.variant === "Morgen") {
-    try {
-      res.setHeader("Content-Type", "application/json");
-      res.setHeader("Cache-Control", "s-maxage=270, stale-while-revalidate");
-      const response = await ikarusFetch(req.query.variant);
-      if (response.date !== "") {
-        res.status(200).end(JSON.stringify(response));
-      } else {
-        // Wait 50ms then redirect to the same endpoint
-        await new Promise((resolve) => setTimeout(resolve, 50));
-        res.setHeader("Cache-Control", "no-store");
-        res.redirect(307, `/api/IkarusFetch/${req.query.variant}`);
-      }
-    } catch (error) {
-      res.status(500).end(JSON.stringify(error));
-    }
-  } else {
-    res.status(400).end(JSON.stringify({ message: "Invalid variant" }));
-  }
-};
-
-export default IkarusFetchHandler;
+export { DateToday, DateTomorrow, FormatDate, IkarusFetch };

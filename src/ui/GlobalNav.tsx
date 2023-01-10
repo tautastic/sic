@@ -1,14 +1,15 @@
 "use client";
 
-import type { GlobalNavParent } from "@/lib/types.nav";
-import { GlobalNavSections } from "@/lib/GlobalNavSections";
-import { NextLogo } from "@/ui/NextLogo";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { HiBars3BottomLeft, HiXMark } from "react-icons/hi2";
+
+import type { GlobalNavParent } from "@/lib/types.nav";
+import { GlobalNavSections } from "@/lib/GlobalNavSections";
+import { NextLogo } from "@/ui/NextLogo";
 
 interface GlobalNavItemProps {
   item: GlobalNavParent;

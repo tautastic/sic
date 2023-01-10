@@ -1,9 +1,10 @@
 "use client";
 
-import type { GlobalNavChild } from "@/lib/types.nav";
 import clsx from "clsx";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
+import type { GlobalNavChild } from "@/lib/types.nav";
 
 export const Tab = (item: GlobalNavChild) => {
   const pathname = usePathname();
