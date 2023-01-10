@@ -14,14 +14,28 @@ interface IkarusTableProps {
 }
 
 export const IkarusTable = ({ variant }: IkarusTableProps) => {
+  const filter = usePathname()?.split("/").at(1);
   const slug = usePathname()?.split("/").at(-1);
   const { ikarusHeute, ikarusMorgen, isFetching } = useIkarus();
   const ikarusState = variant === "Heute" ? ikarusHeute : ikarusMorgen;
 
+  console.log("filter", filter, "slug", slug);
   const formattedDate = FormatDate(ikarusState.date);
-  const tableEntries = ikarusState.rows.filter((row) => {
-    return slug === "k" || (slug !== undefined && row.classes.includes(slug));
-  });
+  const tableEntries =
+    slug === filter
+      ? ikarusState.rows
+      : filter === "k" && slug !== undefined
+      ? ikarusState.rows.filter((row) => {
+          return row.classes.includes(slug);
+        })
+      : filter === "t" && slug !== undefined
+      ? ikarusState.rows.filter((row) => {
+          return (
+            row.originalTeacher?.includes(slug) ||
+            row.substituteTeacher?.includes(slug)
+          );
+        })
+      : [];
 
   return (
     <Suspense fallback={<IkarusTableLoading />}>

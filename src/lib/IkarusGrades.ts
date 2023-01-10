@@ -114,6 +114,21 @@ export const IkarusGrades: GlobalNavParent[] = [
     text: "Infobildschirm für den 6. Jahrgang",
     children: [
       {
+        name: "6",
+        path: "/k",
+        slug: "6",
+      },
+      {
+        name: "6",
+        path: "/k",
+        slug: "6iva",
+      },
+      {
+        name: "6",
+        path: "/k",
+        slug: "6ivb",
+      },
+      {
         name: "Klasse 6a",
         path: "/k",
         slug: "6a",
@@ -156,6 +171,11 @@ export const IkarusGrades: GlobalNavParent[] = [
     slug: "7",
     text: "Infobildschirm für den 7. Jahrgang",
     children: [
+      {
+        name: "7",
+        path: "/k",
+        slug: "7",
+      },
       {
         name: "Klasse 7a",
         path: "/k",
@@ -200,6 +220,11 @@ export const IkarusGrades: GlobalNavParent[] = [
     text: "Infobildschirm für den 8. Jahrgang",
     children: [
       {
+        name: "8",
+        path: "/k",
+        slug: "8",
+      },
+      {
         name: "Klasse 8a",
         path: "/k",
         slug: "8a",
@@ -242,6 +267,11 @@ export const IkarusGrades: GlobalNavParent[] = [
     slug: "9",
     text: "Infobildschirm für den 9. Jahrgang",
     children: [
+      {
+        name: "9",
+        path: "/k",
+        slug: "9",
+      },
       {
         name: "Klasse 9a",
         path: "/k",
@@ -286,6 +316,11 @@ export const IkarusGrades: GlobalNavParent[] = [
     text: "Infobildschirm für den 10. Jahrgang",
     children: [
       {
+        name: "10",
+        path: "/k",
+        slug: "10",
+      },
+      {
         name: "Klasse 10a",
         path: "/k",
         slug: "10a",
@@ -329,6 +364,11 @@ export const IkarusGrades: GlobalNavParent[] = [
     text: "Infobildschirm für den 11. Jahrgang",
     children: [
       {
+        name: "11",
+        path: "/k",
+        slug: "11",
+      },
+      {
         name: "Klasse 11a",
         path: "/k",
         slug: "11a",
@@ -371,6 +411,11 @@ export const IkarusGrades: GlobalNavParent[] = [
     slug: "12",
     text: "Infobildschirm für den 12. Jahrgang",
     children: [
+      {
+        name: "12",
+        path: "/k",
+        slug: "12",
+      },
       {
         name: "Klasse 12a",
         path: "/k",
