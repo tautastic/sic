@@ -19,18 +19,21 @@ export const IkarusTable = ({ variant }: IkarusTableProps) => {
   const { ikarusHeute, ikarusMorgen, isFetching } = useIkarus();
   const ikarusState = variant === "Heute" ? ikarusHeute : ikarusMorgen;
 
+  console.log("filter", filter, "slug", slug);
   const formattedDate = FormatDate(ikarusState.date);
   const tableEntries =
     slug === filter
       ? ikarusState.rows
       : filter === "k" && slug !== undefined
       ? ikarusState.rows.filter((row) => {
-          row.classes.includes(slug);
+          return row.classes.includes(slug);
         })
-      : filter === "l" && slug !== undefined
+      : filter === "t" && slug !== undefined
       ? ikarusState.rows.filter((row) => {
-          row.originalTeacher?.includes(slug) ||
-            row.substituteTeacher?.includes(slug);
+          return (
+            row.originalTeacher?.includes(slug) ||
+            row.substituteTeacher?.includes(slug)
+          );
         })
       : [];
 
