@@ -6,7 +6,7 @@ const DateToday = () => {
     return "20221221";
   } else {
     const date = new Date();
-    date.setDate(date.getDate() + 1);
+    date.setHours(date.getHours() + 1);
     // Skip weekends
     if (date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
@@ -25,7 +25,7 @@ const DateTomorrow = () => {
     return "20221222";
   } else {
     const date = new Date();
-    date.setDate(date.getDate() + 1);
+    date.setHours(date.getHours() + 1);
     // Skip weekends
     if (date.getDay() === 5 || date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
