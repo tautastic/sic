@@ -3,17 +3,15 @@ import { DefaultIkarusResponse } from "@/lib/types.ikarus";
 
 const DateToday = () => {
   if (process.env.VERCEL_ENV === "preview") {
-    return "20221221";
+    return "20220117";
   } else {
     const date = new Date();
-    date.setHours(date.getHours() + 1);
     // Skip weekends
     if (date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
     } else if (date.getDay() === 0) {
       date.setDate(date.getDate() + 1);
-    }
-    if (20 <= date.getHours()) {
+    } else if (19 <= date.getHours()) {
       date.setDate(date.getDate() + 1);
     }
     return date.toISOString().split("T")[0]?.replace(/-/g, "");
@@ -22,17 +20,15 @@ const DateToday = () => {
 
 const DateTomorrow = () => {
   if (process.env.VERCEL_ENV === "preview") {
-    return "20221222";
+    return "20220118";
   } else {
     const date = new Date();
-    date.setHours(date.getHours() + 1);
     // Skip weekends
     if (date.getDay() === 5 || date.getDay() === 6) {
       date.setDate(date.getDate() + 2);
     } else if (date.getDay() === 0) {
       date.setDate(date.getDate() + 1);
-    }
-    if (20 <= date.getHours()) {
+    } else if (19 <= date.getHours()) {
       date.setDate(date.getDate() + 1);
     }
     date.setDate(date.getDate() + 1);
