@@ -7,7 +7,7 @@ export const Byline = () => {
         <span>Made by</span>
         <a
           className="text-gray-200 underline decoration-dotted underline-offset-4 hover:text-gray-50"
-          href="https://github.com/add1609"
+          href="https://github.com/tautastic"
           target="_blank"
           rel="noreferrer">
           Ahmed Sami
