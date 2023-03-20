@@ -1,4 +1,5 @@
 import "@/styles/globals.css";
+import { IkarusProvider } from "@/contexts/IkarusProvider";
 import type { ReactNode } from "react";
 import { NextSeo } from "next-seo";
 import SEO from "next-seo.config";
@@ -39,7 +40,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => {
             </VercelContainer>
 
             <VercelContainer className={"p-3.5 lg:p-6"}>
-              {children}
+              <IkarusProvider>{children}</IkarusProvider>
             </VercelContainer>
 
             <VercelContainer>

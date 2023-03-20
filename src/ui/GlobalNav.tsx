@@ -5,7 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { HiBars3BottomLeft, HiXMark } from "react-icons/hi2";
+import { Menu, X } from "lucide-react";
 
 import type { GlobalNavParent } from "@/lib/types.nav";
 import { GlobalNavSections } from "@/lib/GlobalNavSections";
@@ -75,9 +75,9 @@ export const GlobalNav = () => {
           Menu
         </div>
         {isOpen ? (
-          <HiXMark className="block w-6 text-gray-400" />
+          <X className="block w-6 text-gray-400" />
         ) : (
-          <HiBars3BottomLeft className="block w-6 text-gray-400" />
+          <Menu className="block w-6 text-gray-400" />
         )}
       </button>
 
